@@ -1,5 +1,5 @@
-export default function Allnsights() {
+export default function AIInsights() {
     return(
-        <div>/Allmsights</div>
+        <div>AIInsights</div>
     )
 }
