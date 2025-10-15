@@ -1,6 +1,6 @@
 'use server';
 
-import { categorizeExpense } from '@/lib/ai';
+import { categorizeExpense } from "@/prisma/lib/ai";
 
 export async function suggestCategory(
   description: string
