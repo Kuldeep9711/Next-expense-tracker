@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import OpenAI from "openai";
 
 interface RawInsight {
   type?: string;
@@ -9,11 +9,11 @@ interface RawInsight {
 }
 
 const openai = new OpenAI({
-  baseURL: 'https://openrouter.ai/api/v1',
+  baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY,
   defaultHeaders: {
-    'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-    'X-Title': 'ExpenseTracker AI',
+    "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    "X-Title": "ExpenseTracker AI",
   },
 });
 
@@ -27,7 +27,7 @@ export interface ExpenseRecord {
 
 export interface AIInsight {
   id: string;
-  type: 'warning' | 'info' | 'success' | 'tip';
+  type: "warning" | "info" | "success" | "tip";
   title: string;
   message: string;
   action?: string;
@@ -68,15 +68,15 @@ export async function generateExpenseInsights(
     Return only valid JSON array, no additional text.`;
 
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat-v3-0324:free',
+      model: "gpt-3.5-turbo",
       messages: [
         {
-          role: 'system',
+          role: "system",
           content:
-            'You are a financial advisor AI that analyzes spending patterns and provides actionable insights. Always respond with valid JSON only.',
+            "You are a financial advisor AI that analyzes spending patterns and provides actionable insights. Always respond with valid JSON only.",
         },
         {
-          role: 'user',
+          role: "user",
           content: prompt,
         },
       ],
@@ -86,19 +86,19 @@ export async function generateExpenseInsights(
 
     const response = completion.choices[0].message.content;
     if (!response) {
-      throw new Error('No response from AI');
+      throw new Error("No response from AI");
     }
 
     // Clean the response by removing markdown code blocks if present
     let cleanedResponse = response.trim();
-    if (cleanedResponse.startsWith('```json')) {
+    if (cleanedResponse.startsWith("```json")) {
       cleanedResponse = cleanedResponse
-        .replace(/^```json\s*/, '')
-        .replace(/\s*```$/, '');
-    } else if (cleanedResponse.startsWith('```')) {
+        .replace(/^```json\s*/, "")
+        .replace(/\s*```$/, "");
+    } else if (cleanedResponse.startsWith("```")) {
       cleanedResponse = cleanedResponse
-        .replace(/^```\s*/, '')
-        .replace(/\s*```$/, '');
+        .replace(/^```\s*/, "")
+        .replace(/\s*```$/, "");
     }
 
     // Parse AI response
@@ -108,9 +108,9 @@ export async function generateExpenseInsights(
     const formattedInsights = insights.map(
       (insight: RawInsight, index: number) => ({
         id: `ai-${Date.now()}-${index}`,
-        type: insight.type || 'info',
-        title: insight.title || 'AI Insight',
-        message: insight.message || 'Analysis complete',
+        type: insight.type || "info",
+        title: insight.title || "AI Insight",
+        message: insight.message || "Analysis complete",
         action: insight.action,
         confidence: insight.confidence || 0.8,
       })
@@ -118,17 +118,17 @@ export async function generateExpenseInsights(
 
     return formattedInsights;
   } catch (error) {
-    console.error('❌ Error generating AI insights:', error);
+    console.error("❌ Error generating AI insights:", error);
 
     // Fallback to mock insights if AI fails
     return [
       {
-        id: 'fallback-1',
-        type: 'info',
-        title: 'AI Analysis Unavailable',
+        id: "fallback-1",
+        type: "info",
+        title: "AI Analysis Unavailable",
         message:
-          'Unable to generate personalized insights at this time. Please try again later.',
-        action: 'Refresh insights',
+          "Unable to generate personalized insights at this time. Please try again later.",
+        action: "Refresh insights",
         confidence: 0.5,
       },
     ];
@@ -138,15 +138,15 @@ export async function generateExpenseInsights(
 export async function categorizeExpense(description: string): Promise<string> {
   try {
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat-v3-0324:free',
+      model: "gpt-3.5-turbo",
       messages: [
         {
-          role: 'system',
+          role: "system",
           content:
-            'You are an expense categorization AI. Categorize expenses into one of these categories: Food, Transportation, Entertainment, Shopping, Bills, Healthcare, Other. Respond with only the category name.',
+            "You are an expense categorization AI. Categorize expenses into one of these categories: Food, Transportation, Entertainment, Shopping, Bills, Healthcare, Other. Respond with only the category name.",
         },
         {
-          role: 'user',
+          role: "user",
           content: `Categorize this expense: "${description}"`,
         },
       ],
@@ -157,22 +157,22 @@ export async function categorizeExpense(description: string): Promise<string> {
     const category = completion.choices[0].message.content?.trim();
 
     const validCategories = [
-      'Food',
-      'Transportation',
-      'Entertainment',
-      'Shopping',
-      'Bills',
-      'Healthcare',
-      'Other',
+      "Food",
+      "Transportation",
+      "Entertainment",
+      "Shopping",
+      "Bills",
+      "Healthcare",
+      "Other",
     ];
 
-    const finalCategory = validCategories.includes(category || '')
+    const finalCategory = validCategories.includes(category || "")
       ? category!
-      : 'Other';
+      : "Other";
     return finalCategory;
   } catch (error) {
-    console.error('❌ Error categorizing expense:', error);
-    return 'Other';
+    console.error("❌ Error categorizing expense:", error);
+    return "Other";
   }
 }
 
@@ -202,15 +202,15 @@ export async function generateAIAnswer(
     Return only the answer text, no additional formatting.`;
 
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat-v3-0324:free',
+      model: "deepseek/deepseek-chat-v3-0324:free",
       messages: [
         {
-          role: 'system',
+          role: "system",
           content:
-            'You are a helpful financial advisor AI that provides specific, actionable answers based on expense data. Be concise but thorough.',
+            "You are a helpful financial advisor AI that provides specific, actionable answers based on expense data. Be concise but thorough.",
         },
         {
-          role: 'user',
+          role: "user",
           content: prompt,
         },
       ],
@@ -220,12 +220,12 @@ export async function generateAIAnswer(
 
     const response = completion.choices[0].message.content;
     if (!response) {
-      throw new Error('No response from AI');
+      throw new Error("No response from AI");
     }
 
     return response.trim();
   } catch (error) {
-    console.error('❌ Error generating AI answer:', error);
+    console.error("❌ Error generating AI answer:", error);
     return "I'm unable to provide a detailed answer at the moment. Please try refreshing the insights or check your connection.";
   }
 }
