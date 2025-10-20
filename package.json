@@ -11,7 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",
     "@clerk/themes": "^2.2.55",
-    "@prisma/client": "^6.11.1",
+    "@prisma/client": "^6.17.1",
     "chart.js": "^4.5.1",
     "next": "15.3.5",
     "openai": "^5.23.2",
@@ -28,7 +28,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.5",
     "postcss": "^8.5.6",
-    "prisma": "^6.11.1",
+    "prisma": "^6.17.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
