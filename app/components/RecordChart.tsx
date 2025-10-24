@@ -1,3 +1,4 @@
+
 import getRecords from '@/app/actions/getRecords';
 import BarChart from './BarChart'; // Ensure BarChart.tsx or BarChart.jsx exists in the same directory
 
