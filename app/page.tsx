@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import AddNewRecord from './components/AddNewRecord';
 import AIInsights from './components/AIInsights';
 import ExpenseStats from './components/ExpenseStats';
