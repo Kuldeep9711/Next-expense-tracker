@@ -75,7 +75,6 @@ async function addExpenseRecord(formData: FormData): Promise<RecordResult> {
       try {
         const client = await clerkClient();
         const clerkUser = await client.users.getUser(userId);
-        
 
 
         
